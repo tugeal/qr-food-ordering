@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+  padding: 4px 0 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .header {
+    gap: 10px;
+  }
+}

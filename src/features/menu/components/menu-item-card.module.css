@@ -1,0 +1,56 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.photo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--surf);
+}
+
+.image {
+  object-fit: cover;
+}
+
+.emoji {
+  font-size: 54px;
+  line-height: 1;
+  filter: grayscale(1);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px 16px;
+}
+
+.description {
+  flex: 1;
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--mute);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 8px;
+}

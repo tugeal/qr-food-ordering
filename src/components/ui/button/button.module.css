@@ -1,0 +1,48 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 12px 22px;
+  border: 1px solid var(--acc);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.primary {
+  background: var(--acc);
+  color: var(--on);
+}
+
+.primary:hover {
+  background: #000;
+}
+
+.secondary {
+  border-color: #d9d9d9;
+  background: #fff;
+  color: var(--ink);
+}
+
+.secondary:hover {
+  border-color: var(--ink);
+}
+
+.sm {
+  min-height: 36px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

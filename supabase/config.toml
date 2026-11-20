@@ -1,0 +1,6 @@
+# Minimal Supabase CLI config. `npx supabase init --force` regenerates the full default file.
+project_id = "qr-food-ordering"
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]

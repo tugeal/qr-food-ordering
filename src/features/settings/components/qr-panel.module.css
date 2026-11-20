@@ -1,0 +1,53 @@
+.panel {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.panel h2 {
+  margin: 0 0 8px;
+}
+
+.help {
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.help code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--surf);
+  font-size: 13px;
+}
+
+.url {
+  color: var(--ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.code {
+  display: block;
+  width: 264px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  margin: 20px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actions + .help {
+  margin-top: 20px;
+}

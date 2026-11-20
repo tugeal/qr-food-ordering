@@ -1,0 +1,23 @@
+.card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.text {
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.card h3 + .text {
+  margin-top: 6px;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 18px;
+  }
+}

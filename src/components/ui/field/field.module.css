@@ -1,0 +1,18 @@
+.label {
+  display: block;
+  margin: 18px 0 6px;
+  color: #44444a;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.error {
+  margin: 4px 0 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.error::before {
+  content: "Error: ";
+}

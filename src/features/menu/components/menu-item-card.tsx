@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Price } from "@/components/ui/price";
 import type { MenuItem } from "../types";
@@ -6,7 +7,13 @@ import styles from "./menu-item-card.module.css";
 
 const IMAGE_SIZES = "(min-width: 900px) 25vw, (min-width: 640px) 33vw, 50vw";
 
-export function MenuItemCard({ item }: { item: MenuItem }) {
+type Props = {
+  item: MenuItem;
+  /** Shown for available items, for example an Add to cart control supplied by the page. */
+  action?: ReactNode;
+};
+
+export function MenuItemCard({ item, action }: Props) {
   return (
     <article className={styles.card}>
       <div className={styles.photo}>
@@ -29,7 +36,7 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
         {item.description && <p className={styles.description}>{item.description}</p>}
         <div className={styles.footer}>
           <Price value={item.price} />
-          {!item.isAvailable && <Badge>Sold out</Badge>}
+          {item.isAvailable ? action : <Badge>Sold out</Badge>}
         </div>
       </div>
     </article>

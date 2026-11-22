@@ -1,5 +1,10 @@
+import { PageShell } from "@/components/layout/page-shell";
 import { EmptyState } from "@/components/ui/empty-state";
 
 export default function Loading() {
-  return <EmptyState>Loading the menu…</EmptyState>;
+  return (
+    <PageShell>
+      <EmptyState>Loading…</EmptyState>
+    </PageShell>
+  );
 }

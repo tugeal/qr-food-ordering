@@ -1,0 +1,16 @@
+.overview {
+  display: grid;
+  gap: 12px;
+}
+
+.label {
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.number {
+  font-size: 26px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}

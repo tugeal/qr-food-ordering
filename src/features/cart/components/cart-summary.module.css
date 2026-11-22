@@ -1,0 +1,26 @@
+.summary {
+  display: grid;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+}
+
+.muted {
+  color: var(--mute);
+  font-size: 14.5px;
+}
+
+.amount {
+  font-variant-numeric: tabular-nums;
+}
+
+.total {
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+}

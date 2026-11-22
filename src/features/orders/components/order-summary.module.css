@@ -1,0 +1,22 @@
+.summary {
+  display: grid;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+}
+
+.amount {
+  font-variant-numeric: tabular-nums;
+}
+
+.note {
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}

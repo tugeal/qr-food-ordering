@@ -5,6 +5,18 @@
   padding: 24px var(--gutter) 140px;
 }
 
+.shell[data-size="form"] {
+  max-width: 1000px;
+}
+
+.shell[data-size="medium"] {
+  max-width: 720px;
+}
+
+.shell[data-size="narrow"] {
+  max-width: 640px;
+}
+
 @media (min-width: 640px) {
   .shell {
     --gutter: 28px;

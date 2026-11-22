@@ -1,16 +1,18 @@
 import type { ReactNode } from "react";
-import { PageShell } from "@/components/layout/page-shell";
-import { SiteHeader } from "@/components/layout/site-header";
-import { siteConfig } from "@/config/site";
-import { getRestaurantName } from "@/features/settings/queries";
+import { CartProvider } from "@/features/cart/cart-provider";
+import { CartBar } from "@/features/cart/components/cart-bar";
+import { getMenu } from "@/features/menu/queries";
 
 export default async function CustomerLayout({ children }: { children: ReactNode }) {
-  const name = await getRestaurantName();
+  const categories = await getMenu();
+  const catalog = categories.flatMap((category) =>
+    category.items.map(({ id, name, price, isAvailable }) => ({ id, name, price, isAvailable })),
+  );
 
   return (
-    <PageShell>
-      <SiteHeader title={name} subtitle={siteConfig.tagline} />
+    <CartProvider catalog={catalog}>
       {children}
-    </PageShell>
+      <CartBar />
+    </CartProvider>
   );
 }

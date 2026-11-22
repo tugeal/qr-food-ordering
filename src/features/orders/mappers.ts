@@ -1,3 +1,4 @@
+import { isPaymentMethodCode } from "@/config/payment-methods";
 import type { Database } from "@/types/database";
 import type { Order } from "./types";
 
@@ -11,6 +12,9 @@ export type OrderRow = Pick<
   | "order_type"
   | "table_number"
   | "instructions"
+  | "payment_method"
+  | "payment_status"
+  | "payment_reference"
   | "subtotal"
   | "total"
   | "created_at"
@@ -29,6 +33,10 @@ export function toOrder(row: OrderRow): Order {
     type: row.order_type,
     table: row.table_number,
     instructions: row.instructions,
+    // Orders placed before payment methods existed have none.
+    paymentMethod: isPaymentMethodCode(row.payment_method) ? row.payment_method : null,
+    paymentStatus: row.payment_status,
+    paymentReference: row.payment_reference,
     subtotal: row.subtotal,
     total: row.total,
     createdAt: row.created_at,

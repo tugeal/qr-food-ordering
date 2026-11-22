@@ -5,15 +5,18 @@ import { Button, ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
 import { Input, Textarea } from "@/components/ui/input";
+import type { PaymentMethodCode } from "@/config/payment-methods";
 import { formatPeso } from "@/lib/format/currency";
 import { HONEYPOT_FIELD } from "@/lib/security/honeypot";
 import { placeOrder } from "../actions";
 import type { OrderTypeValue } from "../schemas";
 import styles from "./checkout-form.module.css";
 import { OrderTypeToggle } from "./order-type-toggle";
+import { PaymentMethodPicker } from "./payment-method-picker";
 
 type Props = {
   items: { itemId: string; quantity: number }[];
+  paymentOptions: { code: PaymentMethodCode; name: string }[];
   count: number;
   subtotal: number;
   /** Why the order can't be placed yet, such as sold-out items in the cart. */
@@ -27,6 +30,7 @@ type Values = {
   orderType: OrderTypeValue;
   table: string;
   notes: string;
+  paymentMethod: PaymentMethodCode | "";
   website: string;
 };
 
@@ -36,10 +40,11 @@ const INITIAL: Values = {
   orderType: "dine_in",
   table: "",
   notes: "",
+  paymentMethod: "",
   website: "",
 };
 
-export function CheckoutForm({ items, count, subtotal, blocked, onPlaced }: Props) {
+export function CheckoutForm({ items, paymentOptions, count, subtotal, blocked, onPlaced }: Props) {
   const [values, setValues] = useState<Values>(INITIAL);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -131,6 +136,13 @@ export function CheckoutForm({ items, count, subtotal, blocked, onPlaced }: Prop
               {...aria("notes")}
             />
           </Field>
+
+          <PaymentMethodPicker
+            options={paymentOptions}
+            value={values.paymentMethod}
+            onChange={(paymentMethod) => set("paymentMethod", paymentMethod)}
+            error={errorOf("paymentMethod")}
+          />
 
           <div className={styles.trap} aria-hidden="true">
             <label htmlFor={HONEYPOT_FIELD}>Leave this field empty</label>

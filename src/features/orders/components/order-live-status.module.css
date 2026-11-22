@@ -2,3 +2,9 @@
   display: grid;
   gap: 12px;
 }
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

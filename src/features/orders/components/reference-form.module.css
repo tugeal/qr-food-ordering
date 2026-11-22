@@ -1,0 +1,16 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.saved {
+  margin-top: 8px;
+  color: var(--mute);
+  font-size: 14.5px;
+}

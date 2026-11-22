@@ -1,0 +1,16 @@
+.list {
+  display: grid;
+  gap: 12px;
+}
+
+.list .option {
+  width: 100%;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.empty {
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}

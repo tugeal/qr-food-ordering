@@ -15,7 +15,10 @@ export function OrderOverview({ order }: { order: Order }) {
     <Card className={styles.overview}>
       <div className={styles.label}>Order number</div>
       <div className={styles.number}>#{order.number}</div>
-      <OrderLiveStatus publicId={order.id} initialStatus={order.status} />
+      <OrderLiveStatus
+        publicId={order.id}
+        initial={{ status: order.status, paymentStatus: order.paymentStatus }}
+      />
       <div className={styles.label}>
         {describe(order)} · {formatOrderTime(order.createdAt)}
       </div>

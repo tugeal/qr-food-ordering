@@ -138,6 +138,9 @@ export type Database = {
           instructions: string | null;
           order_number: number;
           order_type: Database["public"]["Enums"]["order_type"];
+          payment_method: string | null;
+          payment_reference: string | null;
+          payment_status: Database["public"]["Enums"]["payment_status"];
           status: Database["public"]["Enums"]["order_status"];
           subtotal: number;
           table_number: string | null;
@@ -152,6 +155,9 @@ export type Database = {
           instructions?: string | null;
           order_number?: never;
           order_type: Database["public"]["Enums"]["order_type"];
+          payment_method?: string | null;
+          payment_reference?: string | null;
+          payment_status?: Database["public"]["Enums"]["payment_status"];
           status?: Database["public"]["Enums"]["order_status"];
           subtotal: number;
           table_number?: string | null;
@@ -166,10 +172,57 @@ export type Database = {
           instructions?: string | null;
           order_number?: never;
           order_type?: Database["public"]["Enums"]["order_type"];
+          payment_method?: string | null;
+          payment_reference?: string | null;
+          payment_status?: Database["public"]["Enums"]["payment_status"];
           status?: Database["public"]["Enums"]["order_status"];
           subtotal?: number;
           table_number?: string | null;
           total?: number;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "orders_payment_method_fkey";
+            columns: ["payment_method"];
+            isOneToOne: false;
+            referencedRelation: "payment_methods";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
+      payment_methods: {
+        Row: {
+          account_name: string;
+          account_number: string;
+          bank_name: string;
+          code: string;
+          display_name: string;
+          instructions: string;
+          is_active: boolean;
+          sort_order: number;
+          updated_at: string;
+        };
+        Insert: {
+          account_name?: string;
+          account_number?: string;
+          bank_name?: string;
+          code: string;
+          display_name: string;
+          instructions?: string;
+          is_active?: boolean;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Update: {
+          account_name?: string;
+          account_number?: string;
+          bank_name?: string;
+          code?: string;
+          display_name?: string;
+          instructions?: string;
+          is_active?: boolean;
+          sort_order?: number;
           updated_at?: string;
         };
         Relationships: [];
@@ -190,6 +243,7 @@ export type Database = {
           p_instructions: string;
           p_items: Json;
           p_order_type: Database["public"]["Enums"]["order_type"];
+          p_payment_method: string;
           p_table_number: string;
         };
         Returns: { new_order_id: string; new_order_number: number }[];
@@ -202,6 +256,7 @@ export type Database = {
     Enums: {
       order_status: "pending" | "confirmed" | "preparing" | "completed" | "cancelled";
       order_type: "dine_in" | "takeout";
+      payment_status: "unpaid" | "paid";
     };
     CompositeTypes: { [_ in never]: never };
   };

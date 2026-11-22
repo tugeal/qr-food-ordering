@@ -1,0 +1,25 @@
+.card {
+  display: grid;
+  gap: 16px;
+}
+
+.label,
+.muted {
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.number {
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.amount {
+  font-variant-numeric: tabular-nums;
+}
+
+.instructions {
+  white-space: pre-wrap;
+}

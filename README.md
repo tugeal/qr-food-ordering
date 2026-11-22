@@ -1,13 +1,13 @@
 # QR Food Ordering
 
-Customers scan a QR code, browse a digital menu, order, and (from Phase 3) pay by GCash, Maya or bank transfer. Built with Next.js, Supabase and Vercel.
+Customers scan a QR code, browse a digital menu, order, and pay by GCash, Maya or bank transfer. Built with Next.js, Supabase and Vercel.
 
 ## Status
 
 - [x] Setup: project, database migrations, seed data, CI
 - [x] Phase 1: QR menu (categories, food cards, availability) and the QR code page
 - [x] Phase 2: cart, checkout, server-priced orders, order page with live status
-- [ ] Phase 3: payment methods
+- [x] Phase 3: payment methods, payment instructions and reference numbers
 - [ ] Phase 4: admin dashboard and sign-in
 
 ## Run it locally
@@ -22,19 +22,34 @@ You need Node 20.9 or newer (22 recommended) and pnpm (`npm install -g pnpm`).
 
 The QR code page is at `/admin/qr`. To test on a phone, join the same Wi-Fi and open the Network address that `pnpm dev` prints.
 
-Already ran Phase 1? Unzip this version over your folder, run `pnpm install`, add `SUPABASE_SECRET_KEY` to `.env.local`, and run only the three new migration files (dated 20261120) in the SQL Editor.
+Already ran Phase 2? Unzip this version over your folder, run only the three new migration files (dated 20261122) in the SQL Editor, restart `pnpm dev`, then set your real payment details (below). There are no new packages.
 
 If the Supabase CLI complains about `supabase/config.toml`, run `npx supabase init --force`.
 
 ## How an order works
 
 1. The cart lives in the browser (localStorage), so it survives a refresh.
-2. At checkout the browser sends only item ids and quantities to a Server Action.
+2. At checkout the customer picks a payment method, and the browser sends only item ids, quantities and that choice to a Server Action.
 3. The action validates the input (Zod, honeypot) and calls the `create_order` database function with the secret key.
-4. The function checks availability, copies names and prices from the menu, saves the order and its items in one transaction, and throttles each phone number to 5 orders per 10 minutes.
-5. The customer lands on `/order/<random id>`, which polls `/api/orders/<id>` every 10 seconds for status changes.
+4. The function checks availability and the payment method, copies names and prices from the menu, saves the order and its items in one transaction, and throttles each phone number to 5 orders per 10 minutes.
+5. The customer lands on `/order/<random id>`. It shows the account details and exact amount, lets them save a reference number, and polls `/api/orders/<id>` every 10 seconds for status and payment changes.
 
-Until Phase 4, change an order's `status` in the Supabase Table Editor.
+Until Phase 4, change an order's `status` or `payment_status` in the Supabase Table Editor.
+
+## Payment details
+
+Open Table Editor, then `payment_methods`. There is one row per method:
+
+| Column | Meaning |
+| --- | --- |
+| `is_active` | `true` shows the method at checkout, `false` hides it |
+| `display_name` | The name customers see |
+| `account_name` | The name on the account |
+| `account_number` | The GCash or Maya mobile number, or the bank account number |
+| `bank_name` | Bank transfer only |
+| `instructions` | Extra text shown to the customer |
+
+Account details are read only by the server and appear only on an order page, never to visitors who have not ordered.
 
 ## Scripts
 
@@ -55,7 +70,7 @@ src/
   app/          routes only, no business logic
   components/   layout/ and ui/ (the shared design system)
   config/       constants
-  features/     one folder per capability (menu, cart, checkout, orders, settings)
+  features/     one folder per capability (menu, cart, checkout, orders, payments, settings)
   hooks/        shared React hooks
   lib/          env, Supabase clients, actions helper, formatting, storage
   styles/       design tokens, base styles, fonts
@@ -66,7 +81,7 @@ docs/           deployment runbook
 
 ## Conventions
 
-- Imports flow one way: app, then features, then components/ui, hooks and lib. Features never import each other (ESLint enforces it); pages and `_components` compose them.
+- Imports flow one way: app, then features, then components/ui, hooks, config and lib. Features never import each other (ESLint enforces it); pages and `_components` compose them.
 - Every `queries.ts` imports `server-only`, so server code and secrets cannot reach the browser.
 - Prices are never trusted from the browser: the `create_order` function prices every order.
 - Every table has row level security. Visitors can read the active menu and public settings, and nothing else.

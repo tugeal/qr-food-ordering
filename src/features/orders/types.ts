@@ -1,4 +1,5 @@
-import type { OrderStatus } from "./status";
+import type { PaymentMethodCode } from "@/config/payment-methods";
+import type { OrderStatus, PaymentStatus } from "./status";
 
 export type OrderType = "dine_in" | "takeout";
 
@@ -17,6 +18,9 @@ export type Order = {
   type: OrderType;
   table: string | null;
   instructions: string | null;
+  paymentMethod: PaymentMethodCode | null;
+  paymentStatus: PaymentStatus;
+  paymentReference: string | null;
   subtotal: number;
   total: number;
   createdAt: string;

@@ -5,7 +5,7 @@ import { fail, ok } from "@/lib/actions/result";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkoutSchema } from "./schemas";
 
-const KNOWN_ERRORS = ["items_unavailable", "rate_limited", "invalid_items"];
+const KNOWN_ERRORS = ["items_unavailable", "rate_limited", "invalid_items", "invalid_payment_method"];
 
 function describeError(error: { message: string; details?: string | null }): string {
   switch (error.message) {
@@ -18,14 +18,17 @@ function describeError(error: { message: string; details?: string | null }): str
       return "Too many orders from this number. Please wait a few minutes and try again.";
     case "invalid_items":
       return "We couldn’t read your cart. Refresh the page and try again.";
+    case "invalid_payment_method":
+      return "That payment method isn’t available right now. Please choose another.";
     default:
       return "We couldn’t place your order. Please try again.";
   }
 }
 
 /**
- * Places an order. The browser sends item ids and quantities only; the create_order database
- * function checks availability and prices everything from the menu in one transaction.
+ * Places an order. The browser sends item ids, quantities and the payment choice only; the
+ * create_order database function checks availability and prices everything from the menu in one
+ * transaction.
  */
 export const placeOrder = createAction(checkoutSchema, async (input) => {
   const supabase = createAdminClient();
@@ -35,6 +38,7 @@ export const placeOrder = createAction(checkoutSchema, async (input) => {
     p_order_type: input.orderType,
     p_table_number: input.orderType === "dine_in" ? input.table : "",
     p_instructions: input.notes,
+    p_payment_method: input.paymentMethod,
     p_items: input.items.map((item) => ({ menu_item_id: item.itemId, quantity: item.quantity })),
   });
 

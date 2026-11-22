@@ -1,19 +1,22 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { usePolling } from "@/hooks/use-polling";
-import { isFinalStatus, isOrderStatus, STATUS_LABEL, type OrderStatus } from "../status";
+import { isSettled, parseLiveState, STATUS_LABEL, type LiveState } from "../status";
 import styles from "./order-live-status.module.css";
 import { OrderStatusTracker } from "./order-status-tracker";
 
 const POLL_INTERVAL_MS = 10_000;
 
-type Props = { publicId: string; initialStatus: OrderStatus };
+type Props = { publicId: string; initial: LiveState };
 
-/** The order's status badge and progress bar, refreshed every few seconds until the order is final. */
-export function OrderLiveStatus({ publicId, initialStatus }: Props) {
-  const [status, setStatus] = useState(initialStatus);
+/** Status badges and the progress bar, refreshed every few seconds until nothing can change. */
+export function OrderLiveStatus({ publicId, initial }: Props) {
+  const router = useRouter();
+  const [live, setLive] = useState(initial);
 
   usePolling(
     async () => {
@@ -21,23 +24,30 @@ export function OrderLiveStatus({ publicId, initialStatus }: Props) {
         const response = await fetch(`/api/orders/${publicId}`, { cache: "no-store" });
         if (!response.ok) return;
 
-        const data: unknown = await response.json();
-        const next = typeof data === "object" && data !== null && "status" in data ? data.status : null;
-        if (isOrderStatus(next)) setStatus(next);
+        const next = parseLiveState(await response.json());
+        if (!next) return;
+
+        setLive(next);
+
+        // The payment section is rendered on the server: refresh it once the order is paid or cancelled.
+        const paidNow = next.paymentStatus !== live.paymentStatus;
+        const cancelledNow = next.status === "cancelled" && live.status !== "cancelled";
+        if (paidNow || cancelledNow) router.refresh();
       } catch {
         // A network hiccup: the next poll catches up.
       }
     },
     POLL_INTERVAL_MS,
-    !isFinalStatus(status),
+    !isSettled(live.status, live.paymentStatus),
   );
 
   return (
     <div className={styles.live} aria-live="polite">
-      <div>
-        <StatusBadge tone={status}>{STATUS_LABEL[status]}</StatusBadge>
+      <div className={styles.badges}>
+        <StatusBadge tone={live.status}>{STATUS_LABEL[live.status]}</StatusBadge>
+        <Badge>{live.paymentStatus === "paid" ? "Paid" : "Unpaid"}</Badge>
       </div>
-      {status !== "cancelled" && <OrderStatusTracker status={status} />}
+      {live.status !== "cancelled" && <OrderStatusTracker status={live.status} />}
     </div>
   );
 }

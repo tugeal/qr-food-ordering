@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PAYMENT_METHOD_CODES, type PaymentMethodCode } from "@/config/payment-methods";
 import { normalizePhMobile } from "@/lib/format/phone";
 import { honeypotSchema } from "@/lib/security/honeypot";
 
@@ -22,6 +23,7 @@ export const checkoutSchema = z.object({
   orderType: z.enum(ORDER_TYPES),
   table: z.string().trim().max(10, "That table number is too long.").default(""),
   notes: z.string().trim().max(200, "Keep instructions under 200 characters.").default(""),
+  paymentMethod: z.enum(PAYMENT_METHOD_CODES, { error: "Choose a payment method." }),
   website: honeypotSchema,
   items: z
     .array(
@@ -35,3 +37,4 @@ export const checkoutSchema = z.object({
 });
 
 export type CheckoutInput = z.input<typeof checkoutSchema>;
+export type { PaymentMethodCode };

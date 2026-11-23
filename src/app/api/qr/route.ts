@@ -9,7 +9,8 @@ export async function GET(request: Request) {
   const format = searchParams.get("format") === "png" ? "png" : "svg";
   const menuUrl = await getMenuUrl();
 
-  const headers = new Headers({ "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" });
+  // Never cached: after the address changes, the very next download must show the new code.
+  const headers = new Headers({ "Cache-Control": "no-store" });
   if (searchParams.has("download")) {
     headers.set("Content-Disposition", `attachment; filename="menu-qr.${format}"`);
   }

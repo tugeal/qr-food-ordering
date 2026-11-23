@@ -19,6 +19,12 @@ export async function getRestaurantName(): Promise<string> {
   return settings.restaurant_name?.trim() || siteConfig.defaultName;
 }
 
+/** The raw `site_url` setting, empty when none is set. Prefills the dashboard form. */
+export async function getSiteUrlSetting(): Promise<string> {
+  const settings = await getSettings();
+  return settings.site_url ?? "";
+}
+
 /** The address printed in the QR code: the `site_url` setting, else NEXT_PUBLIC_SITE_URL. */
 export async function getMenuUrl(): Promise<string> {
   const settings = await getSettings();

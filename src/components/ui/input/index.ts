@@ -1,1 +1,1 @@
-export { Input, Textarea } from "./input";
+export { Checkbox, Input, Select, Textarea } from "./input";

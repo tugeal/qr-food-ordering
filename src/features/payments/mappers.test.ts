@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { toPaymentMethod, toPaymentOptions } from "./mappers";
+import { toAdminPaymentMethods, toPaymentMethod, toPaymentOptions } from "./mappers";
 
 describe("toPaymentOptions", () => {
   it("orders by sort_order and drops unknown codes", () => {
@@ -40,5 +40,24 @@ describe("toPaymentMethod", () => {
 
   it("rejects codes it doesn't know", () => {
     expect(toPaymentMethod({ ...row, code: "paypal" })).toBeNull();
+  });
+});
+
+describe("toAdminPaymentMethods", () => {
+  it("always returns all three methods, filling in any that are missing", () => {
+    const methods = toAdminPaymentMethods([
+      {
+        code: "maya",
+        display_name: "Maya",
+        account_name: "Sample Kitchen",
+        account_number: "09171234567",
+        bank_name: "",
+        instructions: "",
+        is_active: true,
+      },
+    ]);
+    expect(methods.map((method) => method.code)).toEqual(["gcash", "maya", "bank_transfer"]);
+    expect(methods[1]).toMatchObject({ accountNumber: "09171234567", isActive: true });
+    expect(methods[0]).toMatchObject({ name: "GCash", accountNumber: "", isActive: false });
   });
 });

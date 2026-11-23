@@ -1,0 +1,32 @@
+.title {
+  margin: 0 0 4px;
+}
+
+.help {
+  margin-top: 8px;
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.saved {
+  color: var(--mute);
+  font-size: 14.5px;
+}
+
+.error {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.error::before {
+  content: "Error: ";
+}

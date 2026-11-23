@@ -11,3 +11,16 @@
 .control::placeholder {
   color: #9a9aa0;
 }
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #44444a;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.check input {
+  width: auto;
+}

@@ -1,0 +1,35 @@
+.card {
+  display: grid;
+  gap: 16px;
+}
+
+.item {
+  display: grid;
+  gap: 8px;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.line input {
+  flex: 1;
+  min-width: 0;
+}
+
+.meta {
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.error {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.error::before {
+  content: "Error: ";
+}

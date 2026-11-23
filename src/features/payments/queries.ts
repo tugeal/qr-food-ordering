@@ -1,8 +1,9 @@
 import "server-only";
 import { cache } from "react";
+import { requireAdmin } from "@/lib/auth/admin";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { toPaymentMethod, toPaymentOptions } from "./mappers";
-import type { PaymentMethod, PaymentOption } from "./types";
+import { toAdminPaymentMethods, toPaymentMethod, toPaymentOptions } from "./mappers";
+import type { AdminPaymentMethod, PaymentMethod, PaymentOption } from "./types";
 
 /** Methods the restaurant has switched on, for the checkout picker. Names only. */
 export const getPaymentOptions = cache(async (): Promise<PaymentOption[]> => {
@@ -30,4 +31,16 @@ export async function getPaymentMethod(code: string): Promise<PaymentMethod | nu
 
   if (error) throw new Error(`Could not load the payment method: ${error.message}`);
   return data ? toPaymentMethod(data) : null;
+}
+
+/** Every method, switched on or off, for the dashboard. */
+export async function getAdminPaymentMethods(): Promise<AdminPaymentMethod[]> {
+  await requireAdmin();
+
+  const { data, error } = await createAdminClient()
+    .from("payment_methods")
+    .select("code, display_name, account_name, account_number, bank_name, instructions, is_active");
+
+  if (error) throw new Error(`Could not load payment methods: ${error.message}`);
+  return toAdminPaymentMethods(data ?? []);
 }

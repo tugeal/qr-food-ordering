@@ -12,3 +12,6 @@ export type PaymentMethod = PaymentOption & {
   bankName: string;
   instructions: string;
 };
+
+/** A payment method as the restaurant edits it in the dashboard. */
+export type AdminPaymentMethod = PaymentMethod & { isActive: boolean };

@@ -26,3 +26,9 @@ export type Order = {
   createdAt: string;
   items: OrderItem[];
 };
+
+/** An order as the restaurant sees it: with the customer's name and number. */
+export type AdminOrder = Order & {
+  customerName: string;
+  contactNumber: string;
+};

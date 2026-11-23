@@ -1,6 +1,6 @@
 import { isPaymentMethodCode } from "@/config/payment-methods";
 import type { Database } from "@/types/database";
-import type { Order } from "./types";
+import type { AdminOrder, Order } from "./types";
 
 type Tables = Database["public"]["Tables"];
 
@@ -25,6 +25,8 @@ export type OrderRow = Pick<
   >[];
 };
 
+export type AdminOrderRow = OrderRow & Pick<Tables["orders"]["Row"], "customer_name" | "contact_number">;
+
 export function toOrder(row: OrderRow): Order {
   return {
     id: row.id,
@@ -46,5 +48,13 @@ export function toOrder(row: OrderRow): Order {
       quantity: item.quantity,
       lineTotal: item.line_total,
     })),
+  };
+}
+
+export function toAdminOrder(row: AdminOrderRow): AdminOrder {
+  return {
+    ...toOrder(row),
+    customerName: row.customer_name,
+    contactNumber: row.contact_number,
   };
 }

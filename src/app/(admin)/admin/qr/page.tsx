@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
-import { PageShell } from "@/components/layout/page-shell";
-import { SiteHeader } from "@/components/layout/site-header";
 import { QrPanel } from "@/features/settings/components/qr-panel";
-import { getMenuUrl, getRestaurantName } from "@/features/settings/queries";
+import { RestaurantForm } from "@/features/settings/components/restaurant-form";
+import { getMenuUrl, getRestaurantName, getSiteUrlSetting } from "@/features/settings/queries";
+import { requireAdmin } from "@/lib/auth/admin";
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "QR code", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "QR code" };
 
-// TODO(phase 4): protect with requireAdmin() in src/app/(admin)/admin/layout.tsx.
 export default async function QrPage() {
-  const [name, menuUrl] = await Promise.all([getRestaurantName(), getMenuUrl()]);
+  await requireAdmin();
+  const [name, menuUrl, siteUrl] = await Promise.all([
+    getRestaurantName(),
+    getMenuUrl(),
+    getSiteUrlSetting(),
+  ]);
 
   return (
-    <PageShell>
-      <SiteHeader title={name} subtitle="Admin dashboard" />
+    <div className={styles.page}>
       <QrPanel menuUrl={menuUrl} />
-    </PageShell>
+      <RestaurantForm restaurantName={name} siteUrl={siteUrl} />
+    </div>
   );
 }

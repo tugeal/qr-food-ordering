@@ -1,0 +1,66 @@
+.list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.card {
+  display: grid;
+  gap: 16px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.thumb {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--surf);
+}
+
+.image {
+  object-fit: cover;
+}
+
+.emoji {
+  font-size: 26px;
+  line-height: 1;
+  filter: grayscale(1);
+}
+
+.meta {
+  color: var(--mute);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.error {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.error::before {
+  content: "Error: ";
+}

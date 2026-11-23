@@ -1,0 +1,20 @@
+.available {
+  margin-top: 18px;
+}
+
+.message {
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.message::before {
+  content: "Error: ";
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 20px;
+}

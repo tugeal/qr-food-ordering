@@ -5,7 +5,7 @@
 1. Create a project in the Southeast Asia (Singapore) region.
 2. SQL Editor: run every file in `supabase/migrations/` in order, then `supabase/seed.sql`.
 3. Project Settings, API Keys: copy the Project URL, the publishable key and a secret key.
-4. Table Editor, `payment_methods`: replace the placeholder account details with your real ones (see README, "Payment details").
+4. Create your admin account and turn off public sign-ups: see [admin-setup.md](admin-setup.md).
 
 ## 2. Vercel
 
@@ -22,21 +22,21 @@
 3. Deploy. `vercel.json` runs functions in Singapore (`sin1`), next to the database.
 4. Add your custom domain (Project, Settings, Domains), then update `NEXT_PUBLIC_SITE_URL` and redeploy.
 
-## 3. The QR code
+## 3. Set up the restaurant in the dashboard
 
-Open `/admin/qr` on the live site, download the PNG and print it. The code points at the `site_url` row of the `settings` table and falls back to `NEXT_PUBLIC_SITE_URL`. Print only after the final domain is set.
+1. Sign in at `/admin/login`.
+2. Payments: replace the placeholder account details and switch on the methods you use.
+3. Menu: replace the sample food with yours, and add photos.
+4. QR code: confirm the menu link and restaurant name, download the PNG and print it. Print only after the final domain is set.
 
 ## 4. Test an order on the live site
 
-1. Scan the QR code with a phone, add items, choose a payment method, check out.
-2. The order page shows your account details and the exact amount. Save a reference number.
-3. In Supabase, open Table Editor, `orders`: the order, its payment method and the reference are there.
-4. Keep the order page open, change the order's `status` or set `payment_status` to `paid`, and watch the page update within about ten seconds.
-5. Delete your test orders in Table Editor.
+1. Scan the QR code with a phone, add items, choose a payment method, check out, and save a reference number.
+2. In the dashboard, Orders: the order appears within about ten seconds. Change its status and mark it paid, and watch the customer's page update.
+3. Delete your test orders in Supabase, Table Editor, `orders`.
 
 ## 5. Before taking real orders
 
-- Replace every placeholder in `payment_methods` and switch off (`is_active` = false) any method you don't use.
 - Vercel's free Hobby plan is for non-commercial use, so use a paid plan for a live restaurant.
 - Supabase free projects pause after a week of inactivity and have no automatic backups. Consider the Pro plan for production.
-- `/admin/qr` is public, and orders can only be managed in the Supabase dashboard, until Phase 4 adds admin sign-in.
+- Use a long, unique admin password, and keep public sign-ups switched off.

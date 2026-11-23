@@ -1,0 +1,21 @@
+.title {
+  margin: 0 0 4px;
+}
+
+.message {
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.message::before {
+  content: "Error: ";
+}
+
+.actions {
+  margin-top: 24px;
+}
+
+.actions button {
+  width: 100%;
+}

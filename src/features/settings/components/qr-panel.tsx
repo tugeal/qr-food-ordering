@@ -23,9 +23,8 @@ export function QrPanel({ menuUrl }: { menuUrl: string }) {
         </ButtonLink>
       </div>
       <p className={styles.help}>
-        The address comes from the <code>site_url</code> row in the Supabase <code>settings</code>{" "}
-        table, or from <code>NEXT_PUBLIC_SITE_URL</code> when that row is empty. Update it after you
-        deploy, then download the new code.
+        Change the menu link in Restaurant details, then download a fresh code. Print only after
+        your final domain is set.
       </p>
     </section>
   );

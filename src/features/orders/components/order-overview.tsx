@@ -1,13 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { formatOrderTime } from "@/lib/format/datetime";
+import { describePlace } from "../format";
 import type { Order } from "../types";
 import { OrderLiveStatus } from "./order-live-status";
 import styles from "./order-overview.module.css";
-
-function describe(order: Order): string {
-  if (order.type === "takeout") return "Takeout";
-  return order.table ? `Dine-in · Table ${order.table}` : "Dine-in";
-}
 
 /** The top card of the order page: number, live status, and where and when it was placed. */
 export function OrderOverview({ order }: { order: Order }) {
@@ -20,7 +16,7 @@ export function OrderOverview({ order }: { order: Order }) {
         initial={{ status: order.status, paymentStatus: order.paymentStatus }}
       />
       <div className={styles.label}>
-        {describe(order)} · {formatOrderTime(order.createdAt)}
+        {describePlace(order)} · {formatOrderTime(order.createdAt)}
       </div>
     </Card>
   );

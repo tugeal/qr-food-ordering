@@ -1,5 +1,5 @@
 import type { Database } from "@/types/database";
-import type { MenuCategory } from "./types";
+import type { AdminCategory, AdminMenuItem, MenuCategory } from "./types";
 
 type Tables = Database["public"]["Tables"];
 
@@ -32,4 +32,42 @@ export function toMenuCategories(rows: CategoryRow[]): MenuCategory[] {
         })),
     }))
     .filter((category) => category.items.length > 0);
+}
+
+export type AdminCategoryRow = Pick<Tables["categories"]["Row"], "id" | "name" | "sort_order">;
+export type AdminItemRow = ItemRow & Pick<Tables["menu_items"]["Row"], "category_id">;
+
+/** Everything the dashboard lists: all categories (even empty ones) and all items (even sold out). */
+export function toAdminMenu(
+  categoryRows: AdminCategoryRow[],
+  itemRows: AdminItemRow[],
+): { categories: AdminCategory[]; items: AdminMenuItem[] } {
+  const orderedCategories = [...categoryRows].sort((a, b) => a.sort_order - b.sort_order);
+  const position = new Map(orderedCategories.map((category, index) => [category.id, index]));
+
+  const categories = orderedCategories.map((category) => ({
+    id: category.id,
+    name: category.name,
+    itemCount: itemRows.filter((item) => item.category_id === category.id).length,
+  }));
+
+  // Items follow their category's order, then their own.
+  const items = [...itemRows]
+    .sort(
+      (a, b) =>
+        (position.get(a.category_id) ?? 0) - (position.get(b.category_id) ?? 0) ||
+        a.sort_order - b.sort_order,
+    )
+    .map((item) => ({
+      id: item.id,
+      categoryId: item.category_id,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      emoji: item.emoji,
+      imageUrl: item.image_url,
+      isAvailable: item.is_available,
+    }));
+
+  return { categories, items };
 }
